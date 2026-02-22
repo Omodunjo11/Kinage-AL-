@@ -1,0 +1,52 @@
+llm:
+  provider: openai
+  model: gpt-4o
+  temperature: 0.3
+  max_tokens: 4000
+
+embeddings:
+  provider: openai
+  model: text-embedding-3-large
+  dimensions: 3072
+
+api_keys:
+  openai: YOUR_KEY_HERE
+  reddit_client_id: REPLACE_ME
+  reddit_client_secret: REPLACE_ME
+  reddit_user_agent: AL-ingestion-bot/1.0
+
+taxonomy:
+  path: ./config/taxonomy.yaml
+
+ingestion:
+  internal:
+    source_dir: ./corpus/internal
+    chunk_size: 512
+    chunk_overlap: 64
+  rss:
+    enabled: true
+    feeds:
+      # Google News – fraud / elder finance
+      - name: google_elder_fraud
+        url: "https://news.google.com/rss/search?q=elder+financial+fraud"
+      - name: google_dementia_finance
+        url: "https://news.google.com/rss/search?q=dementia+finances"
+      - name: google_caregiver_finance
+        url: "https://news.google.com/rss/search?q=caregiver+financial+abuse"
+      # FTC press releases
+      - name: ftc_press
+        url: "https://www.ftc.gov/news-events/news/press-releases/rss"
+      # DOJ financial fraud
+      - name: doj_financial_fraud
+        url: "https://www.justice.gov/opa/pr/rss.xml"
+    max_items_per_feed: 25
+  reddit:
+    subreddits:
+      - CaregiverSupport
+      - AgingParents
+      - dementia
+      - ElderCare
+    time_filter: month
+    posts_per_subreddit: 50
+    min_score: 5
+

@@ -1,0 +1,15 @@
+{
+  "id": "6b639528984a",
+  "text": "Financial Institutions & Wealth Managers Savings Tips Money Talks Legal & Financial Planning Fraud & Scams Financial Caregiving 101 Alzheimer\u2019s & Dementia Fraud & Scams 149 Million Login Credentials Exposed Online By Jenny Leight \u2022 February 17, 2026 Copy Link URL Copied! A major online credential leak has put millions of people\u2019s accounts at risk, and this could directly affect your digital, identity, and financial security if any of your email or account passwords were involved. Here\u2019s what you need to know. \u200d What Happened \u200d Cybersecurity researcher Jeremiah Fowler discovered a publicly accessible, unsecured database containing about 149 million usernames and passwords. The database was unencrypted and open on the web with no password protection, meaning anyone who found it could view the data. This wasn\u2019t a breach of a single company\u2019s systems. Instead, the information came from personal computers and phones that had been infected with harmful software. That harmful software quietly collected saved login information without people realizing it. The stolen data included emails, usernames, passwords, and URLs where those credentials could be used. This kind of exposure is especially concerning because criminals can take real usernames and passwords and try them on other websites, especially if the same password is used in more than one place. Accounts Found in the Exposed Data Security researchers shared estimates showing which accounts appeared most frequently in the exposed database. These numbers represent how many usernames and passwords were found for each service: 48 million \u2013 Gmail 17 million \u2013 Facebook 6.5 million \u2013 Instagram 4 million \u2013 Yahoo Mail 3.4 million \u2013 Netflix 1.5 million \u2013 Outlook 1.4 million \u2013 .edu (school and university email accounts) 900,000 \u2013 iCloud Mail 780,000 \u2013 TikTok 420,000 \u2013 Binance (cryptocurrency accounts) 100,000 \u2013 OnlyFans \u200d Why This Matters If you use any of these services, especially email, your account may be at higher risk \u2014 particularly if you: Reuse the same password in more than one place Save passwords on your computer or phone Haven\u2019t changed passwords in a long time \u200d Email accounts are especially important to protect, because they can be used to reset passwords for banks, shopping sites, and other personal accounts. What You Can Do Now Change passwords for important accounts, starting with email and financial accounts Use different passwords for different websites Watch for unusual emails, login alerts, or activity you don\u2019t recognize If this feels overwhelming,",
+  "metadata": {
+    "source": "web",
+    "competitor": "Carefull",
+    "base_url": "https://getcarefull.com/articles",
+    "url": "https://getcarefull.com/articles/149-million-login-credentials-exposed-online",
+    "title": "149 Million Login Credentials Exposed Online | Take Care",
+    "domain_tags": [],
+    "score": 0.0,
+    "decay": 1.0
+  },
+  "ingested_at": "2026-02-22T17:53:39.754931"
+}
