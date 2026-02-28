@@ -1,190 +1,91 @@
 # AL Market Intelligence Taxonomy
-# Source: Kinage taxonomy document + glossary
-# Owner: Lapo | Updated: Feb 2026
+# Strategic Clustering + Weighting Model for Kinage
+# Owner: Lapo
+# Updated: Feb 2026
+
+# ── CLUSTERING LOGIC ───────────────────────────────────────────
 
 intersection_multiplier: 1.5
+
 priority_intersections:
   - [bill_execution, family_coordination]
   - [bill_execution, cognitive_decline]
   - [family_coordination, fraud_exploitation]
   - [cognitive_decline, fraud_exploitation]
+  - [bill_execution, regulatory_enforcement]
   - [remote_caregiving, bill_execution]
+
+# ── DOMAIN STRUCTURE ───────────────────────────────────────────
+# Tier 1 = Core wedge (50–60%)
+# Tier 2 = Amplifiers / risk (25–30%)
+# Tier 3 = Narrative / context (10–15%)
 
 domains:
 
-  # ── TIER 1: CORE STRATEGIC DOMAINS (50-60% weight) ─────────────────
+  # ── TIER 1: CORE STRATEGIC DOMAINS ────────────────────────────
 
   bill_execution:
     tier: 1
     weight: 0.32
     description: "Bill execution and administrative control — MVP wedge"
-    subdomain:
-      missed_late_payments:
-        triggers:
-          - "missed bill elderly"
-          - "unpaid utilities senior"
-          - "late fees aging parent"
-          - "bill overdue confusion"
-          - "service shutoff nonpayment"
-      duplicate_incorrect_charges:
-        triggers:
-          - "duplicate payment elderly"
-          - "double paid bill"
-          - "incorrect charge parent"
-          - "overpayment utilities"
-          - "subscription confusion senior"
-      administrative_fragmentation:
-        triggers:
-          - "paper bills everywhere"
-          - "too many bank accounts parent"
-          - "managing bills for parents"
-          - "tracking bills manually"
-          - "spreadsheet bill tracker"
-      bill_automation_tools:
-        triggers:
-          - "automated bill detection"
-          - "bill management software senior"
-          - "family bill dashboard"
-          - "payment coordination app"
-          - "financial oversight platform"
 
   family_coordination:
     tier: 1
     weight: 0.28
     description: "Family coordination and role clarity — platform identity"
-    subdomain:
-      caregiver_role_conflict:
-        triggers:
-          - "who is paying the bills"
-          - "sibling conflict money"
-          - "family disagreement finances"
-          - "unclear responsibility parent bills"
-          - "shared financial access confusion"
-      remote_financial_oversight:
-        triggers:
-          - "managing parents finances remotely"
-          - "long distance caregiver bills"
-          - "accessing parents accounts emergency"
-          - "remote financial coordination"
-      financial_control_transitions:
-        triggers:
-          - "when to take over finances"
-          - "stepping in financially parent"
-          - "power of attorney timing"
-          - "financial guardianship transition"
 
-  # ── TIER 2: PROTECTIVE & RISK SIGNALS (25-30% weight) ──────────────
+  # ── TIER 2: PROTECTIVE & RISK SIGNALS ─────────────────────────
 
   fraud_exploitation:
     tier: 2
     weight: 0.15
-    description: "Fraud and financial exploitation — amplifies urgency"
-    subdomain:
-      external_scams:
-        triggers:
-          - "elder scam"
-          - "senior fraud"
-          - "elder fraud"
-          - "financial fraud"
-          - "phishing elderly"
-          - "romance scam senior"
-          - "IRS scam parent"
-      internal_exploitation:
-        triggers:
-          - "power of attorney abuse"
-          - "caregiver theft"
-          - "financial abuse elderly"
-          - "financial abuse"
-          - "elder abuse"
-          - "guardianship misuse"
-          - "caregiver"
-          - "exploitation"
-      fraud_monitoring_tools:
-        triggers:
-          - "fraud monitoring tools"
-          - "suspicious transaction alert"
-          - "elder fraud prevention software"
+    description: "Fraud and financial exploitation — urgency amplifier"
 
   cognitive_decline:
     tier: 2
     weight: 0.12
-    description: "Cognitive decline and financial vulnerability"
-    subdomain:
-      dementia_financial_errors:
-        triggers:
-          - "dementia finances"
-          - "dementia"
-          - "forgetting to pay bills elderly"
-          - "memory loss money mistakes"
-          - "financial capacity decline"
-      behavioral_anomalies:
-        triggers:
-          - "unusual spending elderly"
-          - "financial confusion memory"
-          - "cognitive decline bill mistakes"
+    description: "Cognitive decline and financial vulnerability context"
 
-  # ── TIER 3: NARRATIVE & POSITIONING SIGNALS (10-15% weight) ────────
+  regulatory_enforcement:
+    tier: 2
+    weight: 0.05
+    description: "FTC/DOJ enforcement actions — institutional authority signals"
+
+  influence_channels:
+    tier: 2
+    weight: 0.05
+    description: "Purchase-decision media and channel influence signals"
+    subdomain:
+      mainstream_editorial:
+        triggers:
+          - "NYT Wirecutter"
+          - "Wall Street Journal"
+          - "Consumer Reports"
+          - "aging in place guide"
+          - "home adaptation aging"
+      caregiver_content_hubs:
+        triggers:
+          - "Caring.com"
+          - "AgingCare"
+          - "Next Avenue"
+          - "caregiver organization tools"
+          - "caregiver burnout story"
+      professional_channel_media:
+        triggers:
+          - "AADMM"
+          - "NAELA"
+          - "FPA"
+          - "elder law article"
+          - "daily money manager blog"
+
+  # ── TIER 3: NARRATIVE & CATEGORY CONTEXT ──────────────────────
 
   dignity_autonomy:
     tier: 3
-    weight: 0.07
-    description: "Dignity, autonomy, and control — tone alignment"
-    subdomain:
-      core_narrative:
-        triggers:
-          - "aging with dignity"
-          - "financial independence elderly"
-          - "autonomy in aging"
-          - "control over finances"
-          - "privacy concerns seniors"
+    weight: 0.05
+    description: "Dignity, autonomy, and independence framing"
 
   vendor_category:
     tier: 3
-    weight: 0.06
-    description: "Adjacent vendor and category movement"
-    subdomain:
-      competitor_signals:
-        triggers:
-          - "daily money manager software"
-          - "caregiver financial platform"
-          - "family financial collaboration tool"
-          - "advisor oversight dashboard"
-          - "secure family bill pay"
-
-# ── BILL STATE CONTRACT ─────────────────────────────────────────────
-# Do not invent new states. These are the only valid bill states.
-bill_states:
-  unpaid:
-    definition: "Outstanding obligation. Has not been paid."
-    drives: alerts, projections, user action
-  paid_unverified:
-    definition: "User marked as paid. System has not confirmed. = User Intent."
-    drives: verification window countdown
-  paid_verified:
-    definition: "System confirmed payment via data matching. = System Truth."
-    drives: archive, removes from active list
-  needs_review:
-    definition: "Paid but conflicting/ambiguous signals require attention."
-    drives: review alert to signing-in user
-
-# ── CORE OBJECT HIERARCHY ───────────────────────────────────────────
-object_hierarchy:
-  bill:
-    primary: true
-    definition: "Financial obligation requiring payment. Has amount due + due date."
-    drives: alerts, projections, task list
-    note: "ONLY object that represents required action"
-  receipt:
-    primary: false
-    definition: "Confirmation a payment occurred. Does not require action."
-    role: "Evidence for bill verification only"
-  transaction:
-    primary: false
-    definition: "Read-only record of money moving. Informational."
-    role: "Backend verification signal only. Never drives user task list."
-
-# ── KEY PRINCIPLES ──────────────────────────────────────────────────
-principles:
-  empty_is_not_error: "No bills, no bank connected, no scan results = healthy states"
-  verification_window_owner: "backend — never hardcode in FE"
-  account_holder_note: "Account holder = person whose bills are managed (often elder). NOT inferred from login email."
+    weight: 0.03
+    description: "Adjacent vendor messaging and category movement"

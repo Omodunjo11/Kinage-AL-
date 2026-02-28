@@ -10,7 +10,6 @@ embeddings:
   dimensions: 3072
 
 api_keys:
-  openai: YOUR_KEY_HERE
   reddit_client_id: REPLACE_ME
   reddit_client_secret: REPLACE_ME
   reddit_user_agent: AL-ingestion-bot/1.0
@@ -23,24 +22,65 @@ ingestion:
     source_dir: ./corpus/internal
     chunk_size: 512
     chunk_overlap: 64
+
   rss:
     enabled: true
+    max_items_per_feed: 25
     feeds:
-      # Google News – fraud / elder finance
-      - name: google_elder_fraud
+
+      # ─────────────────────────────
+      # Core Risk & Exploitation Signals
+      # ─────────────────────────────
+
+      - name: google_elder_financial_fraud
         url: "https://news.google.com/rss/search?q=elder+financial+fraud"
+
       - name: google_dementia_finance
         url: "https://news.google.com/rss/search?q=dementia+finances"
+
       - name: google_caregiver_finance
         url: "https://news.google.com/rss/search?q=caregiver+financial+abuse"
-      # FTC press releases
-      - name: ftc_press
-        url: "https://www.ftc.gov/news-events/news/press-releases/rss"
-      # DOJ financial fraud
-      - name: doj_financial_fraud
-        url: "https://www.justice.gov/opa/pr/rss.xml"
-    max_items_per_feed: 25
+
+      - name: google_guardianship_cases
+        url: "https://news.google.com/rss/search?q=guardianship+financial+abuse"
+
+      - name: google_power_of_attorney_abuse
+        url: "https://news.google.com/rss/search?q=power+of+attorney+abuse"
+
+      # ─────────────────────────────
+      # Alzheimer & Cognitive Decline
+      # ─────────────────────────────
+
+      - name: google_alzheimers_site
+        url: "https://news.google.com/rss/search?q=site:alz.org+Alzheimer"
+
+      - name: google_nih_alzheimers
+        url: "https://news.google.com/rss/search?q=site:nih.gov+Alzheimer"
+
+      - name: google_cognitive_decline
+        url: "https://news.google.com/rss/search?q=cognitive+decline+financial+vulnerability"
+
+      # ─────────────────────────────
+      # Government & Enforcement (via Google for Stability)
+      # ─────────────────────────────
+
+      - name: google_sec_fraud
+        url: "https://news.google.com/rss/search?q=site:sec.gov+fraud"
+
+      - name: google_doj_financial
+        url: "https://news.google.com/rss/search?q=site:justice.gov+financial+fraud"
+
+      - name: google_ftc_enforcement
+        url: "https://news.google.com/rss/search?q=site:ftc.gov+fraud"
+
+      - name: google_fbi_financial_crimes
+        url: "https://news.google.com/rss/search?q=site:fbi.gov+financial+fraud"
+
+      - name: google_federal_reserve
+        url: "https://news.google.com/rss/search?q=site:federalreserve.gov+banking"
+
   reddit:
+    enabled: false
     subreddits:
       - CaregiverSupport
       - AgingParents
@@ -49,4 +89,3 @@ ingestion:
     time_filter: month
     posts_per_subreddit: 50
     min_score: 5
-
