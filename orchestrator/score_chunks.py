@@ -2,15 +2,22 @@
 AL Orchestrator — Score Chunks
 
 Final score formula:
-    (Base Domain Weight + Intersection Multiplier) 
-    × Time Decay 
+    (Base Domain Weight + Intersection Multiplier)
+    × Time Decay
     × Authority Weight
+
+After scoring, chunks above SUMMARY_SCORE_THRESHOLD get an AI-generated
+intelligence briefing (summary, why_it_matters, risk_type, entities, severity).
+Pre-computed and cached in corpus JSON; never generated at runtime.
 """
 
 import json
 import yaml
 from pathlib import Path
 from datetime import datetime, timezone
+
+# Only summarize high-signal chunks to control cost
+SUMMARY_SCORE_THRESHOLD = 0.65
 
 BASE = Path(__file__).parent.parent
 
@@ -91,13 +98,14 @@ def calculate_score(tags: list[str], metadata: dict) -> float:
 # Directory Scoring
 # -------------------------
 
-def score_chunks_in_directory(directory: Path):
+def score_chunks_in_directory(directory: Path, summarize: bool = True):
     if not directory.exists():
         print(f"⚠ Directory not found: {directory}")
-        return 0, 0
+        return 0, 0, 0
 
     scored = 0
     skipped = 0
+    summarized = 0
 
     for json_file in directory.glob("*.json"):
         try:
@@ -114,6 +122,25 @@ def score_chunks_in_directory(directory: Path):
                 del metadata["score"]
 
             chunk["score"] = new_score
+            metadata["score"] = new_score
+
+            # Summarize only high-ranking chunks (after scoring, before write)
+            if summarize and new_score >= SUMMARY_SCORE_THRESHOLD:
+                try:
+                    from utils.summary_generator import generate_summary
+                    dominant_domain = tags[0] if tags else ""
+                    briefing = generate_summary(
+                        chunk.get("text", ""),
+                        dominant_domain,
+                    )
+                    chunk["summary"] = briefing.get("summary", "")
+                    chunk["why_it_matters"] = briefing.get("why_it_matters", "")
+                    chunk["risk_type"] = briefing.get("risk_type", "")
+                    chunk["entities"] = briefing.get("entities", [])
+                    chunk["severity"] = briefing.get("severity", "")
+                    summarized += 1
+                except Exception as e:
+                    pass  # Keep chunk without summary on failure
 
             with open(json_file, "w") as f:
                 json.dump(chunk, f, indent=2)
@@ -123,7 +150,7 @@ def score_chunks_in_directory(directory: Path):
         except Exception:
             skipped += 1
 
-    return scored, skipped
+    return scored, skipped, summarized
 
 
 # -------------------------
@@ -131,6 +158,11 @@ def score_chunks_in_directory(directory: Path):
 # -------------------------
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="Score chunks and optionally generate AI summaries for high-score items")
+    parser.add_argument("--no-summarize", action="store_true", help="Skip AI summarization (score only)")
+    args = parser.parse_args()
+
     print("── Scoring Chunks ──\n")
 
     directories = [
@@ -142,16 +174,20 @@ def main():
 
     total_scored = 0
     total_skipped = 0
+    total_summarized = 0
 
     for directory in directories:
         if directory.exists():
             print(f"📁 {directory.relative_to(BASE)}")
-            scored, skipped = score_chunks_in_directory(directory)
+            scored, skipped, summarized = score_chunks_in_directory(
+                directory, summarize=not args.no_summarize
+            )
             total_scored += scored
             total_skipped += skipped
-            print(f"   ✓ Scored: {scored} | ⚠ Skipped: {skipped}\n")
+            total_summarized += summarized
+            print(f"   ✓ Scored: {scored} | Summarized: {summarized} | ⚠ Skipped: {skipped}\n")
 
-    print(f"── Done: {total_scored} scored, {total_skipped} skipped ──")
+    print(f"── Done: {total_scored} scored, {total_summarized} summarized, {total_skipped} skipped ──")
 
 
 if __name__ == "__main__":
