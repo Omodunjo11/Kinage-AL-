@@ -10,3 +10,7 @@ __pycache__/
 
 # OS files
 .DS_Store
+
+# Runtime data
+corpus/
+outputs/
