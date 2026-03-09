@@ -1,6 +1,7 @@
 llm:
   provider: openai
   model: gpt-4o
+  summary_model: gpt-4o-mini   # for intelligence briefings (cost control)
   temperature: 0.3
   max_tokens: 4000
 
