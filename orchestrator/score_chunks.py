@@ -17,7 +17,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 # Only summarize high-signal chunks to control cost
-SUMMARY_SCORE_THRESHOLD = 0.65
+SUMMARY_SCORE_THRESHOLD = 1.0
 
 BASE = Path(__file__).parent.parent
 
@@ -115,7 +115,12 @@ def score_chunks_in_directory(directory: Path, summarize: bool = True):
             metadata = chunk.get("metadata", {})
             tags = metadata.get("domain_tags", [])
 
-            new_score = calculate_score(tags, metadata)
+            try:
+                from utils.semantic_domain_scorer import compute_total_signal
+                _total, _domains = compute_total_signal(chunk.get("text", ""))
+                new_score = float(_total)
+            except Exception:
+                new_score = calculate_score(tags, metadata)
 
             # Remove any old metadata score to prevent confusion
             if "score" in metadata:

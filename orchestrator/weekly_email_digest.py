@@ -10,15 +10,19 @@ Behavior:
 """
 
 from pathlib import Path
-import json
 import os
+from dotenv import load_dotenv
+
+# Load environment FIRST
+BASE = Path(__file__).resolve().parent.parent
+load_dotenv(BASE / ".env")
+
+import json
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from dotenv import load_dotenv
 
 from utils.semantic_domain_scorer import compute_total_signal
-
 
 # -------------------------------------------------
 # Environment + Paths
