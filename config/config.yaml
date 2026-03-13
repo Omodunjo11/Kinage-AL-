@@ -80,6 +80,35 @@ ingestion:
       - name: google_federal_reserve
         url: "https://news.google.com/rss/search?q=site:federalreserve.gov+banking"
 
+              # ─────────────────────────────
+           # ─────────────────────────────
+      # LinkedIn Signal Layer
+      # ─────────────────────────────
+
+      - name: google_linkedin_eldercare
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+care"
+
+      - name: google_linkedin_aging_parents
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+aging+parents"
+
+      - name: google_linkedin_dementia
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+dementia"
+
+      - name: google_linkedin_financial_vulnerability
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+financial+vulnerability"
+
+      - name: google_linkedin_guardianship
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+guardianship"
+
+      - name: google_linkedin_elder_fraud
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+fraud"
+
+      - name: google_linkedin_power_of_attorney
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+power+of+attorney"
+
+      - name: google_linkedin_cognitive_decline
+        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+cognitive+decline"
+        
   reddit:
     enabled: false
     subreddits:
