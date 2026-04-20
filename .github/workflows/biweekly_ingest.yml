@@ -1,0 +1,65 @@
+name: Biweekly Intelligence Refresh
+
+on:
+  schedule:
+    # Every other Monday at 06:00 UTC
+    - cron: "0 6 1,15 * *"
+  workflow_dispatch: # allow manual trigger from GitHub UI
+
+jobs:
+  ingest-and-rank:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kinage-al
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run RSS ingestion
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python ingestion/rss_ingest.py
+
+      - name: Generate ranked feed
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python generate_ranked_feed.py
+
+      - name: Push ranked_chunks.json to kinage-intelligence
+        env:
+          DEPLOY_KEY: ${{ secrets.KINAGE_APP_DEPLOY_KEY }}
+        run: |
+          # Configure git
+          git config --global user.name "Kinage Bot"
+          git config --global user.email "bot@kinage.ai"
+
+          # Set up SSH deploy key
+          mkdir -p ~/.ssh
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+          # Clone kinage-intelligence
+          GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" \
+            git clone git@github.com:Omodunjo11/kinage-intelligence.git /tmp/kinage-app
+
+          # Copy the fresh output
+          cp outputs/ranked_chunks.json /tmp/kinage-app/data/ranked_chunks.json
+
+          # Commit and push if changed
+          cd /tmp/kinage-app
+          git add data/ranked_chunks.json
+          if git diff --cached --quiet; then
+            echo "No changes to ranked_chunks.json — skipping push."
+          else
+            git commit -m "chore: biweekly intelligence refresh $(date -u '+%Y-%m-%d')"
+            GIT_SSH_COMMAND="ssh -i ~/.ssh/deploy_key" git push origin main
+          fi
