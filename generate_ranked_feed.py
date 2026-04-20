@@ -1,7 +1,9 @@
 # generate_ranked_feed.py
 
 import json
+import math
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict
 
@@ -16,6 +18,9 @@ CORPUS_DIRS = [
 
 OUTPUT_PATH = "outputs/ranked_chunks.json"
 SCORE_THRESHOLD = 0.0  # raise to 0.1+ if you want to filter noise
+
+# Recency decay: half-life of 14 days — items 2 weeks old get ~50% score boost
+RECENCY_HALF_LIFE_DAYS = 14
 
 
 # ──────────────────────────────────────────────────────────────
@@ -50,28 +55,72 @@ def load_all_chunks() -> List[Dict]:
 # Score
 # ──────────────────────────────────────────────────────────────
 
+def parse_date(value: str) -> datetime | None:
+    if not value:
+        return None
+    for fmt in (
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M:%SZ",
+        "%Y-%m-%dT%H:%M:%S%z",
+        "%a, %d %b %Y %H:%M:%S %z",
+        "%a, %d %b %Y %H:%M:%S %Z",
+        "%Y-%m-%d",
+    ):
+        try:
+            dt = datetime.strptime(value.strip(), fmt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+            return dt
+        except ValueError:
+            continue
+    return None
+
+
+def age_bucket(days: float) -> str:
+    if days <= 1:
+        return "today"
+    if days <= 7:
+        return "this_week"
+    if days <= 30:
+        return "this_month"
+    return "older"
+
+
+def recency_multiplier(days: float) -> float:
+    return math.exp(-days / RECENCY_HALF_LIFE_DAYS)
+
+
 def score_chunks(chunks: List[Dict]) -> List[Dict]:
     scored = []
     intersection_count = 0
+
+    now = datetime.now(timezone.utc)
 
     for chunk in chunks:
         text = chunk.get("text", "")
 
         if not text.strip():
             chunk["score"] = 0.0
+            chunk["age_bucket"] = "older"
             scored.append(chunk)
             continue
 
+        # ── Recency ──────────────────────────────────────
+        if "metadata" not in chunk:
+            chunk["metadata"] = {}
+
+        pub_str = chunk["metadata"].get("published") or chunk.get("ingested_at", "")
+        pub_dt = parse_date(pub_str)
+        days_old = (now - pub_dt).total_seconds() / 86400 if pub_dt else 999
+        chunk["age_bucket"] = age_bucket(days_old)
+        decay = recency_multiplier(days_old)
+
         try:
             total_score, domain_scores = compute_total_signal(text)
-            
-            # Convert numpy type to plain Python float
-            chunk["score"] = float(total_score)
-            
-            # Convert domain scores dict → clean string array, filter weak signals
-            if "metadata" not in chunk:
-                chunk["metadata"] = {}
-            
+
+            # Apply recency decay to raw signal score
+            chunk["score"] = float(total_score) * decay
+
             if isinstance(domain_scores, dict):
                 chunk["metadata"]["domain_tags"] = [
                     str(k) for k, v in domain_scores.items() if float(v) > 0.35
@@ -80,7 +129,7 @@ def score_chunks(chunks: List[Dict]) -> List[Dict]:
                 chunk["metadata"]["domain_tags"] = [str(t) for t in domain_scores]
             else:
                 chunk["metadata"]["domain_tags"] = []
-            
+
             if chunk["score"] > 0:
                 intersection_count += 1
 
