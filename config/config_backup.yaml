@@ -80,7 +80,34 @@ ingestion:
       - name: google_federal_reserve
         url: "https://news.google.com/rss/search?q=site:federalreserve.gov+banking"
 
-              # ─────────────────────────────
+      # ─────────────────────────────
+      # Tier-1 Editorial + Policy Signals
+      # ─────────────────────────────
+
+      - name: google_nyt_elder_fraud
+        url: "https://news.google.com/rss/search?q=site:nytimes.com+elder+fraud+older+adults"
+
+      - name: google_nyt_caregiver_finance
+        url: "https://news.google.com/rss/search?q=site:nytimes.com+caregiver+finances+aging+parents"
+
+      - name: google_wsj_elder_fraud
+        url: "https://news.google.com/rss/search?q=site:wsj.com+elder+fraud+scams"
+
+      - name: google_wapo_guardianship_abuse
+        url: "https://news.google.com/rss/search?q=site:washingtonpost.com+guardianship+elder+abuse"
+
+      - name: google_kff_health_news_aging
+        url: "https://news.google.com/rss/search?q=site:kffhealthnews.org+aging+caregiving+policy"
+
+      - name: google_aarp_fraud_watch
+        url: "https://news.google.com/rss/search?q=site:aarp.org+fraud+watch+network+older+adults"
+
+      - name: google_cfpb_older_adults
+        url: "https://news.google.com/rss/search?q=site:consumerfinance.gov+older+adults+fraud"
+
+      - name: google_finra_senior_investor
+        url: "https://news.google.com/rss/search?q=site:finra.org+senior+investor+fraud"
+
       # LinkedIn (via Google News Index)
       # ─────────────────────────────
 
