@@ -18,6 +18,10 @@ INTERSECTIONS = [
     ("DOMAIN_A", "DOMAIN_D"),
     ("DOMAIN_B", "DOMAIN_C"),
     ("DOMAIN_D", "DOMAIN_C"),
+    ("DOMAIN_A", "DOMAIN_C"),
+    ("DOMAIN_A", "DOMAIN_E"),
+    ("DOMAIN_B", "DOMAIN_E"),
+    ("DOMAIN_C", "DOMAIN_G"),
 ]
 
 

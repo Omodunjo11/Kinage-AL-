@@ -23,6 +23,7 @@ with open(os.path.join(BASE, config["taxonomy"]["path"].lstrip("./"))) as f:
     taxonomy = yaml.safe_load(f)
 
 rss_cfg = config["ingestion"]["rss"]
+RSS_USER_AGENT = (config.get("api_keys") or {}).get("rss_user_agent") or "kinage-al/1.0"
 
 
 # ─────────────────────────────────────────────
@@ -92,7 +93,7 @@ def ingest_rss():
 
         print(f"\n── {name} ──")
 
-        feed = feedparser.parse(url)
+        feed = feedparser.parse(url, agent=RSS_USER_AGENT)
 
         if feed.bozo:
             print(f"  ⚠ Parse warning: {feed.bozo_exception}")

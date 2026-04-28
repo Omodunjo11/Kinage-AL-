@@ -1,147 +1,106 @@
 llm:
   provider: openai
   model: gpt-4o
-  summary_model: gpt-4o-mini   # for intelligence briefings (cost control)
+  summary_model: gpt-4o-mini
   temperature: 0.3
   max_tokens: 4000
-
 embeddings:
   provider: openai
   model: text-embedding-3-large
   dimensions: 3072
-
 api_keys:
   reddit_client_id: REPLACE_ME
   reddit_client_secret: REPLACE_ME
   reddit_user_agent: AL-ingestion-bot/1.0
-
+  rss_user_agent: kinage-al/1.0 (+signals ingestion)
 taxonomy:
   path: ./config/taxonomy.yaml
-
 ingestion:
   internal:
     source_dir: ./corpus/internal
     chunk_size: 512
     chunk_overlap: 64
-
   rss:
     enabled: true
     max_items_per_feed: 25
     feeds:
-
-      # ─────────────────────────────
-      # Core Risk & Exploitation Signals
-      # ─────────────────────────────
-
-      - name: google_elder_financial_fraud
-        url: "https://news.google.com/rss/search?q=elder+financial+fraud"
-
-      - name: google_dementia_finance
-        url: "https://news.google.com/rss/search?q=dementia+finances"
-
-      - name: google_caregiver_finance
-        url: "https://news.google.com/rss/search?q=caregiver+financial+abuse"
-
-      - name: google_guardianship_cases
-        url: "https://news.google.com/rss/search?q=guardianship+financial+abuse"
-
-      - name: google_power_of_attorney_abuse
-        url: "https://news.google.com/rss/search?q=power+of+attorney+abuse"
-
-      # ─────────────────────────────
-      # Alzheimer & Cognitive Decline
-      # ─────────────────────────────
-
-      - name: google_alzheimers_site
-        url: "https://news.google.com/rss/search?q=site:alz.org+Alzheimer"
-
-      - name: google_nih_alzheimers
-        url: "https://news.google.com/rss/search?q=site:nih.gov+Alzheimer"
-
-      - name: google_cognitive_decline
-        url: "https://news.google.com/rss/search?q=cognitive+decline+financial+vulnerability"
-
-      # ─────────────────────────────
-      # Government & Enforcement (via Google for Stability)
-      # ─────────────────────────────
-
-      - name: google_sec_fraud
-        url: "https://news.google.com/rss/search?q=site:sec.gov+fraud"
-
-      - name: google_doj_financial
-        url: "https://news.google.com/rss/search?q=site:justice.gov+financial+fraud"
-
-      - name: google_ftc_enforcement
-        url: "https://news.google.com/rss/search?q=site:ftc.gov+fraud"
-
-      - name: google_fbi_financial_crimes
-        url: "https://news.google.com/rss/search?q=site:fbi.gov+financial+fraud"
-
-      - name: google_federal_reserve
-        url: "https://news.google.com/rss/search?q=site:federalreserve.gov+banking"
-
-      # ─────────────────────────────
-      # Tier-1 Editorial + Policy Signals
-      # ─────────────────────────────
-
-      - name: google_nyt_elder_fraud
-        url: "https://news.google.com/rss/search?q=site:nytimes.com+elder+fraud+older+adults"
-
-      - name: google_nyt_caregiver_finance
-        url: "https://news.google.com/rss/search?q=site:nytimes.com+caregiver+finances+aging+parents"
-
-      - name: google_wsj_elder_fraud
-        url: "https://news.google.com/rss/search?q=site:wsj.com+elder+fraud+scams"
-
-      - name: google_wapo_guardianship_abuse
-        url: "https://news.google.com/rss/search?q=site:washingtonpost.com+guardianship+elder+abuse"
-
-      - name: google_kff_health_news_aging
-        url: "https://news.google.com/rss/search?q=site:kffhealthnews.org+aging+caregiving+policy"
-
-      - name: google_aarp_fraud_watch
-        url: "https://news.google.com/rss/search?q=site:aarp.org+fraud+watch+network+older+adults"
-
-      - name: google_cfpb_older_adults
-        url: "https://news.google.com/rss/search?q=site:consumerfinance.gov+older+adults+fraud"
-
-      - name: google_finra_senior_investor
-        url: "https://news.google.com/rss/search?q=site:finra.org+senior+investor+fraud"
-
-      # LinkedIn Signal Layer
-      # ─────────────────────────────
-
-      - name: google_linkedin_eldercare
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+care"
-
-      - name: google_linkedin_aging_parents
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+aging+parents"
-
-      - name: google_linkedin_dementia
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+dementia"
-
-      - name: google_linkedin_financial_vulnerability
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+financial+vulnerability"
-
-      - name: google_linkedin_guardianship
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+guardianship"
-
-      - name: google_linkedin_elder_fraud
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+fraud"
-
-      - name: google_linkedin_power_of_attorney
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+power+of+attorney"
-
-      - name: google_linkedin_cognitive_decline
-        url: "https://news.google.com/rss/search?q=site:linkedin.com/posts+cognitive+decline"
-        
+    - name: google_elder_financial_fraud
+      url: https://news.google.com/rss/search?q=elder+financial+fraud
+    - name: google_dementia_finance
+      url: https://news.google.com/rss/search?q=dementia+finances
+    - name: google_caregiver_finance
+      url: https://news.google.com/rss/search?q=caregiver+financial+abuse
+    - name: google_guardianship_cases
+      url: https://news.google.com/rss/search?q=guardianship+financial+abuse
+    - name: google_power_of_attorney_abuse
+      url: https://news.google.com/rss/search?q=power+of+attorney+abuse
+    - name: google_alzheimers_site
+      url: https://news.google.com/rss/search?q=site:alz.org+Alzheimer
+    - name: google_nih_alzheimers
+      url: https://news.google.com/rss/search?q=site:nih.gov+Alzheimer
+    - name: google_cognitive_decline
+      url: https://news.google.com/rss/search?q=cognitive+decline+financial+vulnerability
+    - name: google_sec_fraud
+      url: https://news.google.com/rss/search?q=site:sec.gov+fraud
+    - name: google_doj_financial
+      url: https://news.google.com/rss/search?q=site:justice.gov+financial+fraud
+    - name: google_ftc_enforcement
+      url: https://news.google.com/rss/search?q=site:ftc.gov+fraud
+    - name: google_fbi_financial_crimes
+      url: https://news.google.com/rss/search?q=site:fbi.gov+financial+fraud
+    - name: google_federal_reserve
+      url: https://news.google.com/rss/search?q=site:federalreserve.gov+banking
+    - name: google_nyt_elder_fraud
+      url: https://news.google.com/rss/search?q=site:nytimes.com+elder+fraud+older+adults
+    - name: google_nyt_caregiver_finance
+      url: https://news.google.com/rss/search?q=site:nytimes.com+caregiver+finances+aging+parents
+    - name: google_wsj_elder_fraud
+      url: https://news.google.com/rss/search?q=site:wsj.com+elder+fraud+scams
+    - name: google_wapo_guardianship_abuse
+      url: https://news.google.com/rss/search?q=site:washingtonpost.com+guardianship+elder+abuse
+    - name: google_kff_health_news_aging
+      url: https://news.google.com/rss/search?q=site:kffhealthnews.org+aging+caregiving+policy
+    - name: google_aarp_fraud_watch
+      url: https://news.google.com/rss/search?q=site:aarp.org+fraud+watch+network+older+adults
+    - name: google_cfpb_older_adults
+      url: https://news.google.com/rss/search?q=site:consumerfinance.gov+older+adults+fraud
+    - name: google_finra_senior_investor
+      url: https://news.google.com/rss/search?q=site:finra.org+senior+investor+fraud
+    - name: google_linkedin_eldercare
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+care
+    - name: google_linkedin_aging_parents
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+aging+parents
+    - name: google_linkedin_dementia
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+dementia
+    - name: google_linkedin_financial_vulnerability
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+financial+vulnerability
+    - name: google_linkedin_guardianship
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+guardianship
+    - name: google_linkedin_elder_fraud
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+elder+fraud
+    - name: google_linkedin_power_of_attorney
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+power+of+attorney
+    - name: google_linkedin_cognitive_decline
+      url: https://news.google.com/rss/search?q=site:linkedin.com/posts+cognitive+decline
+    - name: ftc_press_releases
+      url: https://www.ftc.gov/feeds/press-release.xml
+    - name: ftc_consumer_protection_press_releases
+      url: https://www.ftc.gov/feeds/press-release-consumer-protection.xml
+    - name: cfpb_newsroom
+      url: https://www.consumerfinance.gov/about-us/newsroom/feed/
+    - name: fbi_national_press_releases
+      url: https://www.fbi.gov/feeds/national-press-releases
+    - name: aadmm_money_matters
+      url: https://secure.aadmm.com/money-matters-blog/feed/
+    - name: krebs_on_security
+      url: https://krebsonsecurity.com/feed/
   reddit:
     enabled: false
     subreddits:
-      - CaregiverSupport
-      - AgingParents
-      - dementia
-      - ElderCare
+    - CaregiverSupport
+    - AgingParents
+    - dementia
+    - ElderCare
     time_filter: month
     posts_per_subreddit: 50
     min_score: 5
